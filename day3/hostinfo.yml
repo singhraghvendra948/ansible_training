@@ -1,0 +1,11 @@
+---
+- name: getting facts
+  hosts: all
+  remote_user: raghav
+  become: yes
+  tasks:
+    - name: store info
+      template:
+        dest: /root/hostinfo.txt
+        src: /home/raghav/day3/info.txt.j2
+...

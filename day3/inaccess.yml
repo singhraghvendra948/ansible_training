@@ -1,0 +1,17 @@
+---
+- name: for block & rescue
+  hosts: prod
+  remote_user: raghav
+  become: yes
+  tasks:
+    - block:
+        - name: for geturl
+          get_url:
+             url: http://content.example.com/access.html
+             dest: /var/www/html/access.html
+      rescue:  
+        - name: creating access.html file
+          copy:
+            dest: /var/www/html/access.html
+            content: "I have no access created by raghav"
+            force: yes

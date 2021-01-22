@@ -1,0 +1,32 @@
+---
+- name: installation debugging
+  hosts: all
+  remote_user: raghav
+  become: yes
+  tasks:
+    - block:
+       - name: install dummy pkg
+         package:
+           name: dummy
+           state: present
+         register: res1
+         ignore_errors: yes
+       - name: start service
+         service:
+           name: dummy
+           state: started
+         register: res2
+         ignore_errors: yes
+       - debug: var=res1.msg
+       - debug: var=res2.msg
+      rescue:
+         - debug: 
+              msg: "Installation failed"
+           when: res1.failed == true
+         - debug: 
+             msg: "service failed"
+           when: res2.failed == true
+      always:
+      - debug:
+          msg: "Playbook failed"
+        when: res1.failed == true or res2.failed == true  

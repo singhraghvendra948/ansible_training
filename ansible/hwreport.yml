@@ -1,0 +1,39 @@
+---
+- name: h/w report
+  hosts: all
+  remote_user: raghav
+  become: yes
+  vars:
+    inventory_hostname: '{{ ansible_hostname }}'
+    Total_memory_in_mb: '{{ ansible_memtotal_mb }}'
+    bios_versions: '{{ ansible_bios_version }}'
+    size_of_vda_device: '{{ ansible_devices.vda.size }}'
+    size_of_vdb_device: '{{ ansible_devices.vdb.size }}'
+  tasks:
+    - name: dwnload empty hwreport file
+      get_url:
+        url: "http://content.example.com/files/hwreport.empty"
+        dest: /root/hwreport.txt
+      delegate_to: localhost
+    
+    - name: replace file content
+      replace:
+        path: /root/hwreport.txt
+        regexp: '{{ item.From }}'
+        replace: '{{ item.To }}'
+        #state: present
+      loop:  
+        - { From: 'HOST=inventoryhostname', To: 'Host = {{ ansible_hostname }}' }
+        - { From: 'MEMORY=total_memory', To: "MEMORY = {{ ansible_memtotal_mb }}" }
+        - { From: 'BIOS=bios_version', To: "BIOS = {{ ansible_bios_version }}" }
+        - { From: 'VDA_SIZE=ansible_vda_size', To: "VDA_SIZE = {{ ansible_devices.vda.size }}" }
+        - { From: 'VDA_SIZE=ansible_vdb_size', To: "VDB_SIZE = {{ ansible_devices.vdb.size }}" }
+
+      delegate_to: localhost
+      become: true
+
+    - name: generate h/w report
+      template:
+        dest: /root/hwreport_raghav.txt
+        src: /home/raghav/ansible/HWreport.txt.j2
+...

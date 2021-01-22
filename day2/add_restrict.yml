@@ -1,0 +1,23 @@
+---
+- name: lineinfile module
+  hosts: all
+  remote_user: raghav
+  become: yes
+  tasks:
+      - name: replace or insert a line
+        lineinfile:
+                path: /tmp/users.txt
+                #regexp: '^server' #line start with server
+                line: This line was added by Raghav
+                create: yes
+
+      - name: Restrict Root login in serverf
+        lineinfile:
+                path: /etc/ssh/sshd_config
+                regexp: '^PermitRootLogin'
+                line: PermitRootLogin no
+        when: inventory_hostname == 'serverf'
+      - name: restart sshd
+        service:
+                name: sshd
+                state: restarted

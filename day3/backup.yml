@@ -1,0 +1,22 @@
+---
+- name: tarball
+  hosts: all
+  remote_user: raghav
+  become: yes
+  tasks:
+    - name: tarball using tag
+      archive:
+        path: /var/www/html
+        dest: /var/tmp/prod_raghav.tar.gz
+        format: gz
+        force_archive: true
+      tags: prod
+    - name: tarball using dev tag
+      archive:
+        path: /var/log/audit
+        dest: /var/tmp/devops_raghav.tar.gz
+        format: gz
+        force_archive: true
+      tags: dev
+      when: inventory_hostname in groups['dev']
+

@@ -1,0 +1,15 @@
+---
+- name: blockinfile module
+  hosts: test
+  remote_user: raghav
+  become: yes
+  tasks:
+      - name: add block
+        blockinfile:
+           dest: /tmp/myraghav.txt
+           block: |
+                   IdemPotent
+                   Agent-less
+                   Free
+                   Opensource
+           create: yes

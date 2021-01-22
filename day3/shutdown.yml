@@ -1,0 +1,12 @@
+---
+- name: shutdown
+  hosts: all
+  remote_user: raghav
+  become: yes
+  tasks:
+    - name: http stop
+      service:
+        name: httpd
+        state: stopped
+      when: inventory_hostname == 'serverb' or inventory_hostname == 'serverc'
+

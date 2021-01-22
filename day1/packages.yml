@@ -1,0 +1,23 @@
+---
+- name: install pkgs
+  hosts: dev,test,prod
+  remote_user: raghav
+  become: yes
+  tasks:
+      - name: install php,mariadb
+        yum:
+           name:
+               - php
+               - mariadb
+           state: latest
+      - name: install development tools
+        yum:
+           name: "@Development tools"
+           state: present
+        when: inventory_hostname in groups['dev']
+      - name: update all pkgs
+        yum:
+          name: '*'
+          state: latest
+        when: inventory_hostname in groups['dev']
+...

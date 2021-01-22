@@ -1,0 +1,9 @@
+---
+- name: view secret file
+  hosts: all
+  remote_user: raghav
+  become: yes
+  vars_files: 
+    - secret.yml
+  tasks:
+    - debug: var=pw_manager

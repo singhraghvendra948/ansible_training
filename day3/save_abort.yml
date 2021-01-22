@@ -1,0 +1,17 @@
+---
+- name: set file read only
+  hosts: all
+  remote_user: raghav
+  become: yes
+  tasks:
+    #- name: create file with Read only permission
+     - stat:
+          path: /etc/saveabort.txt
+       register: st
+     - debug: var=st.stat.exists
+     - name: if not exist will create
+       copy:
+         dest: /etc/saveabort.txt
+         content: "i am there"
+        # force: yes
+       when: not st.stat.exists

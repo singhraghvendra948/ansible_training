@@ -1,0 +1,10 @@
+---
+- name: replacement
+  hosts: dev
+  remote_user: raghav
+  become: yes
+  tasks:
+      - name: replace dev
+        copy:
+           dest: /etc/issue
+           content: Development

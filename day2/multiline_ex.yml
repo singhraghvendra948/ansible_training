@@ -1,0 +1,13 @@
+---
+- name: lineinfile module
+  hosts: all
+  remote_user: raghav
+  become: yes
+  tasks:
+      - name: add multiple line
+        copy:
+           dest: /tmp/multi.txt
+           content: |
+                   server1
+                   server2
+                   server3

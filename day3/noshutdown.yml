@@ -1,0 +1,12 @@
+---
+- name: no shutdown
+  hosts: all
+  remote_user: raghav
+  become: yes
+  tasks:
+    - name: start http
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+      when: inventory_hostname in groups['prod']

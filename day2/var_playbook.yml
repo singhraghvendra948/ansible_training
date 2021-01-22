@@ -1,0 +1,14 @@
+---
+- hosts: all
+  remote_user: raghav
+  become: yes
+  #vars:
+  #       pkg: httpd
+  #vars_files:
+  #        - external_var.yml
+
+  tasks:
+          - name: installing {{ pkg }}
+            package:
+                    name: "{{ pkg }}"
+                    state: present
